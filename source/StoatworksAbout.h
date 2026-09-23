@@ -15,7 +15,7 @@ namespace stoatworks::about
 {
     inline constexpr auto name = "Copperlist";
     inline constexpr auto slug = "copperlist";
-    inline constexpr auto hook = "An Amiga cracktro, emulated chip by chip, for Resolume";
+    inline constexpr auto hook = "An Amiga cracktro, chip by chip, for Resolume";
     inline constexpr auto licence = "MIT";
     inline constexpr auto guide = "https://stoatworks-labs.com/software/copperlist/guide/";
     inline constexpr auto page = "https://stoatworks-labs.com/software/copperlist/";
