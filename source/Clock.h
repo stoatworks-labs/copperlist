@@ -49,6 +49,10 @@ public:
 	/// Force a unit, for the offline harness, where guessing is noise.
 	void ForceSeconds() { mScale = 1.0; mForced = true; }
 
+	/// Force milliseconds, for the harness to drive the clock the way
+	/// Resolume does -- including at Resolume's measured ~499 million ms.
+	void ForceMilliseconds() { mScale = 0.001; mForced = true; }
+
 private:
 	static constexpr int kVotesNeeded = 4;
 

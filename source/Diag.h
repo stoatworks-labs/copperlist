@@ -24,21 +24,18 @@
     reporter was right, and the report could not be answered from the evidence
     because there was none to give.
 
-    Every way a test pattern fails looks identical from the operator's side -- a
-    black clip -- and the causes are not distinguishable without saying which
-    one happened:
+    Every way this plugin fails looks identical from the operator's side -- a
+    black clip, or one that never moves -- and the causes are not
+    distinguishable without saying which one happened:
 
-    - **A shader would not compile.** The vendor, renderer and version strings go
-      next to it, because a shader that builds on one machine and not another is
-      a driver answer, not a source answer.
-    - **The font would not upload.** Every label, tile reference and burn-in
-      comes off one small texture; without it the patterns draw and the text
-      does not, which reads as "labels are broken" rather than as a GL refusal.
-    - **The host clock unit.** Resolume sends milliseconds and an offline harness
-      sends seconds; the fleet has paid for that confusion twice. What the clock
-      settled on is stated outright rather than inferred from a code read. It
-      matters here because the Motion marker is a latency tool: a sweep that runs
-      a thousand times too fast is a strobe, not a measurement.
+    - **The scaling shader would not compile.** The vendor, renderer and
+      version strings go next to it, because a shader that builds on one
+      machine and not another is a driver answer, not a source answer.
+    - **The host clock unit.** Resolume sends milliseconds and an offline
+      harness sends seconds. Here that decides the field rate: a clock read a
+      thousand times fast runs the demo at 50,000 fields a second, which the
+      catch-up treats as a jump every frame -- a scroller that teleports.
+      What the clock settled on is stated outright rather than inferred.
 
     ## Rate
 
