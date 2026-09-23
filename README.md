@@ -172,9 +172,11 @@ audio, interrupts, and **DMA slot contention** — with five bitplanes the
 manual's bitplane fetches take odd memory slots during the display, which on a
 real machine would delay copper instructions executing inside the window; here
 they are never delayed. There is **no OpenFX port** and **no browser demo**,
-neither of which is needed for 0.1.0. There is no user guide yet, so the About
-block has no guide button, and it and `ATTRIBUTIONS.md` are provisional hand
-copies until the project is registered.
+neither of which is needed for 0.1.0. The About block and `ATTRIBUTIONS.md` are
+provisional hand copies until the project is registered; the About block has no
+guide button until then.
+
+The [user guide](docs/USER-GUIDE.md) covers every control, what it does and why.
 
 [AGENTS.md](AGENTS.md) has the manual's facts with their sections, where the
 manual is ambiguous, the traps, and what is assumed rather than measured.

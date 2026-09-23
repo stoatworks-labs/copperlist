@@ -390,8 +390,9 @@ in six runs no field at all.
 - **The copper-to-pixel delay** is zero here and a few pixels on the machine.
 - **No DMA contention**, as above.
 - **The line-mode step rule** is a reading of the registers, stated.
-- `StoatworksAbout.h` and `ATTRIBUTIONS.md` are provisional hand copies; there
-  is no user guide, so no guide button.
+- `StoatworksAbout.h` and `ATTRIBUTIONS.md` are provisional hand copies with
+  `guide=""`, so the About block has no guide button yet. The user guide is
+  `docs/USER-GUIDE.md`; setting `guide` adds a button, and so a parameter.
 
 ---
 
