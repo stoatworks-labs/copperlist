@@ -74,8 +74,8 @@ control and asserts that it fails.
 ## Not done yet
 - Never loaded into Resolume, on any platform. Never run on any rasteriser but
   this Mac's. Windows never compiled. CI never run.
-- No release tag, no remote, not registered on the website. `StoatworksAbout.h`
-  and `ATTRIBUTIONS.md` are provisional hand copies.
+- Registered on the website; `StoatworksAbout.h` and `ATTRIBUTIONS.md` are generated
+  by stoatworks-backend's syncs, so edit the master lists there, not here.
 - No DMA slot contention, no OpenFX port, no browser demo. The user guide is
   `docs/USER-GUIDE.md`; every claim in it is read from the code, so change both together.
 
