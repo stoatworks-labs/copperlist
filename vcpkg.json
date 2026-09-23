@@ -1,0 +1,11 @@
+{
+  "name": "copperlist",
+  "version-string": "0.1.0",
+  "description": "Dependencies for building the Copperlist FFGL plugin. GLEW is only needed on Windows; macOS uses the system OpenGL framework. There are no other dependencies: the chipset emulation, the font and the demo are plain C++.",
+  "dependencies": [
+    {
+      "name": "glew",
+      "platform": "!osx"
+    }
+  ]
+}
