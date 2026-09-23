@@ -275,7 +275,8 @@ puts things back).
     source/Controls.h       parameter ids, ranges, 0..1 to demo units
     source/Clock.*          the host clock's unit, measured (from flipbook)
     source/Diag.*           a log file
-    tools/cptest/           the harness
+    tools/cptest/           the harness; also --out (a PNG) and --pipe (raw RGBA
+                            frames and a cue sheet, the fleet's filming format)
     tools/sweep.py          no control is silently dead
     tools/verify.sh         all of it
 
