@@ -25,7 +25,7 @@ constexpr uint16_t kBarBases[ static_cast< int >( BarPalette::Count ) ][ 8 ] = {
 // The font's three colours: body, highlight, shadow.
 constexpr uint16_t kFont[ 4 ] = { 0x000, 0xFB2, 0xFFE, 0xA51 };
 constexpr uint16_t kBob       = 0xE44;
-constexpr uint16_t kFace[ 4 ] = { 0x000, 0x6D4, 0x395, 0x1B7 };
+constexpr uint16_t kFace[ 4 ] = { 0x000, 0x8E6, 0x4B4, 0x283 };// lit, mid, shade
 constexpr uint16_t kStar[ 3 ] = { 0xFFF, 0xAAA, 0x666 };
 constexpr uint16_t kStarData[ 3 ] = { 0xC000, 0x8000, 0x8000 };
 
