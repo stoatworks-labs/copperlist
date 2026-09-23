@@ -227,7 +227,8 @@ void Chipset::Blit()
 // moves when the sign bit is clear (the term is >= 0) and the term grows by
 // BLTAMOD = 4(dy - dx), otherwise it grows by BLTBMOD = 4dy; the MAJOR axis
 // moves on every step. That is Bresenham with ties stepping the minor axis,
-// and it is the reading every emulator takes of the same registers.
+// and it is consistent with every register value the manual prescribes.
+// It is still a reading; AGENTS.md says so.
 //
 // SUD/SUL/AUL decode as their names say (Appendix A, BLTCON1): SUD set means
 // the Sometimes axis is Up/Down (a shallow line, x major); SUL, that the
@@ -475,11 +476,27 @@ void Chipset::Compose()
 			continue;
 		}
 
+		// Most lines have no sprite armed at all; the comparators are only
+		// run while one is armed or still shifting out.
+		auto spritesLive = [ this ]() {
+			for( const Sprite& sp : mSprite )
+				if( sp.armed || sp.count > 0 )
+					return true;
+			return false;
+		};
+		bool live = spritesLive();
+
 		for( int p = 0; p < kLoresPerLine; ++p )
 		{
+			bool applied = false;
 			while( wi < mWrites.size() && mWrites[ wi ].cck < lineEnd &&
 				   2 * ( mWrites[ wi ].cck - lineStart ) <= p )
+			{
 				Apply( mWrites[ wi++ ] );
+				applied = true;
+			}
+			if( applied )
+				live = spritesLive();
 
 			if( y == 0 && p == 0 )
 			{
@@ -493,7 +510,7 @@ void Chipset::Compose()
 			// Sprites: the comparator fires when the beam equals HSTART, and
 			// the shift registers then output sixteen pixels, MSB first.
 			int spriteColour = 0, spriteNumber = -1;
-			for( int s = 0; s < kSprites; ++s )
+			for( int s = 0; live && s < kSprites; ++s )
 			{
 				Sprite& sp = mSprite[ static_cast< size_t >( s ) ];
 				const int hstart = ( ( sp.pos & 0xFF ) << 1 ) | ( sp.ctl & 1 );
