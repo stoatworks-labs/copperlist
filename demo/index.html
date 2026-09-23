@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Copperlist — browser demo | Stoatworks Labs</title>
+    <meta name="description" content="Try the Copperlist FFGL source for Resolume in your browser: an Amiga cracktro made by emulating the copper, the blitter and the bitplanes that drew it. A JavaScript port of the plugin's chip emulation and cracktro, put on screen by the plugin's own shader in WebGL2." />
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./vendor/kit.css" />
+    <link rel="canonical" href="https://copperlist-demo.stoatworks-labs.com/" />
+  </head>
+  <body>
+    <main id="demo">
+      <noscript>
+        <p>
+          This demo runs a port of the plugin's chip emulation and its own
+          shader in your browser, so it needs JavaScript and WebGL2. The
+          plugin itself, its source and its downloads are on
+          <a href="https://github.com/stoatworks-labs/copperlist">its repository</a>.
+        </p>
+      </noscript>
+    </main>
+
+    <script type="module" src="./plugin.js"></script>
+    <script
+      src="./vendor/support-footer.js"
+      defer
+      data-app="Copperlist"
+      data-repo="https://github.com/stoatworks-labs/copperlist"
+      data-note="A browser demo: a port of the plugin's chip emulation and cracktro, drawn by its own shader. It is a source: it reads nothing, and nothing you do here leaves your machine."
+    ></script>
+  </body>
+</html>

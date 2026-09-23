@@ -25,6 +25,13 @@ letterboxed — the copper bars run on into the border, as they did on a
 monitor). Rendered by `cptest`, the offline harness, not captured from
 Resolume.</sub>
 
+**[Try it in your browser](https://copperlist-demo.stoatworks-labs.com)** — a
+JavaScript port of the chip emulation and the cracktro, put on screen by the
+plugin's own shader in WebGL2, with every control and a working Text field. The
+port is compared byte for byte with the plugin on 500 fixed frames by
+`tools/verify.sh`; it is still a port and not the plugin: read what
+[the page itself says it does not reproduce](https://copperlist-demo.stoatworks-labs.com).
+
 ## Copper bars are register writes
 
 A cracktro looks the way it does because of the chip that drew it. The Amiga's
@@ -171,8 +178,8 @@ than this Mac's**. The emulation leaves out what does not show: the 68000,
 audio, interrupts, and **DMA slot contention** — with five bitplanes the
 manual's bitplane fetches take odd memory slots during the display, which on a
 real machine would delay copper instructions executing inside the window; here
-they are never delayed. There is **no OpenFX port** and **no browser demo**,
-neither of which is needed for 0.1.0.
+they are never delayed. There is **no OpenFX port**, which is not needed for
+0.1.0. The browser demo is linked at the top.
 
 The [user guide](docs/USER-GUIDE.md) covers every control, what it does and why.
 

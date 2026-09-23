@@ -8,6 +8,12 @@
 #                 before a host has to find out. A shader that will not
 #                 compile presents to an operator as "the clip is
 #                 black", with the real message buried in the log.
+#   demo          the browser demo's copies of those shaders are still the
+#                 plugin's, character for character. demo/plugin.js
+#                 necessarily holds a second copy, and two copies drift
+#                 quietly: the plugin keeps working, the page keeps working,
+#                 and they stop being the same picture. It says nothing about
+#                 the demo's port of the chips -- demo-port does
 #   build         a fresh universal Release build, which is what ships
 #   suites        the plugin's claims: the copper's grid and write order,
 #                 the blitter's lines against an independent Bresenham, the
@@ -17,6 +23,11 @@
 #                 GL ones at 1280x720 AND 320x180, each with its negative
 #                 control
 #   pipe          the fleet's --pipe frame format writes whole frames
+#   demo-port     the browser demo's JavaScript port of the chips and the
+#                 cracktro paints the plugin's fields byte for byte, through
+#                 cptest --pipe, over four cases. The page's whole picture
+#                 comes from that port, so without this a drift in it would
+#                 be caught by nobody
 #   sweep         does every control change the picture
 #   registration  does the bundle contain a plugin at all -- a file-scope
 #                 CFFGLPluginInfo nothing names, which a linker may drop
@@ -138,6 +149,26 @@ else
 fi
 
 #---------------------------------------------------------------------------
+# The browser demo's copy of the same GLSL.
+#
+# `demo/plugin.js` cannot include a C++ file, so it carries its own copy of
+# both shaders. This compares the two character for character --
+# reformatting counts, deliberately, because "it is only whitespace" is how
+# a real change gets waved through.
+#---------------------------------------------------------------------------
+step "demo: the browser copy of the shaders"
+if [ -f demo/tools/check_shaders.py ]; then
+	if python3 demo/tools/check_shaders.py >/tmp/copperlist-demo-shaders.log 2>&1; then
+		pass "$( tail -1 /tmp/copperlist-demo-shaders.log )"
+	else
+		fail "the demo's shaders have drifted -- see /tmp/copperlist-demo-shaders.log"
+		tail -12 /tmp/copperlist-demo-shaders.log
+	fi
+else
+	printf '   skipped: no demo/\n'
+fi
+
+#---------------------------------------------------------------------------
 # A fresh universal Release build -- the one that ships. The dev build in
 # build/ is arm64 only and is not what any of the binary checks below should
 # be looking at.
@@ -171,6 +202,26 @@ if [ "$bytes" = "27648" ]; then
 	pass "--pipe writes three whole 64x36 RGBA frames"
 else
 	fail "--pipe wrote $bytes bytes, expected 27648"
+fi
+
+#---------------------------------------------------------------------------
+# The browser demo's port of the CPU half, against the plugin itself.
+#
+# check_shaders.py covers the two shaders; this covers everything else the
+# page runs -- the chip emulation, the cracktro and the field clock, hand
+# ported to JavaScript -- by comparing each field it paints with what
+# `cptest --pipe` renders at Integer x1. Needs node; skipped without it.
+#---------------------------------------------------------------------------
+step "demo-port"
+if [ ! -f demo/tools/crosscheck.mjs ]; then
+	printf '   skipped: no demo/\n'
+elif ! command -v node >/dev/null 2>&1; then
+	printf '   skipped: node not installed\n'
+elif node demo/tools/crosscheck.mjs "$CPTEST" >/tmp/copperlist-demo-port.log 2>&1; then
+	pass "$( tail -1 /tmp/copperlist-demo-port.log )"
+else
+	fail "the demo's port has drifted from the C++ -- see /tmp/copperlist-demo-port.log"
+	tail -8 /tmp/copperlist-demo-port.log
 fi
 
 step "sweep"

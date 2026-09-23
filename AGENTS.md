@@ -353,7 +353,8 @@ exclusive fill gives sharp vertices. The demo coder's trick, not the manual's.
 side table keyed by the chip address of each bar's MOVE (`chip::Debug::
 wideColour`). Not reachable from any parameter.
 
-**No presets, no OpenFX port, no browser demo.** None is required for 0.1.0.
+**No presets, no OpenFX port.** Neither is required for 0.1.0. The browser
+demo came later; see "The browser demo" below.
 
 ---
 
@@ -410,6 +411,85 @@ in six runs no field at all.
    the next saving.
 5. **Should NTSC use 227.5-clock lines?** Only visible in the grid's phase on
    alternate lines.
+
+---
+
+## The browser demo
+
+`demo/` is the page at **copperlist-demo.stoatworks-labs.com** (added
+2026-09-24). It is a *port*, not a recording and not the plugin.
+
+**What runs for real.** The plugin's two shaders, `kVertexShader` and
+`kFragmentShader`, copied from `source/Shaders.cpp` unedited and drawn the way
+`Renderer::Draw` draws them — one triangle from `gl_VertexID`, one RGBA8 texture,
+NEAREST, the same seven uniforms. `demo/tools/check_shaders.py` compares them
+with the C++ character for character, and `tools/verify.sh` runs it.
+
+**What is ported.** Everything that decides a pixel, which in this plugin is
+the CPU: `Chipset` (copper, blitter area/fill/line modes, Denise's registers
+and sprites, `Compose`), `Demo`, `Tables.h`, `Font.cpp`, every `Controls.h`
+conversion, `ComputeLayout`/`PixelAspect`, `ToOption`, and `Advance` with its
+`Accumulator`s, `FieldIndex` (floor(t × rate + 1e-6)) and the four-field
+catch-up. Function by function, in the source's order: chip RAM a `Uint8Array`,
+the registers a `Uint16Array` (so a store truncates as `static_cast< uint16_t >`
+does), `>>> 0` on every chip pointer, `Math.imul` in the hash, `Math.trunc`
+wherever C++ divides ints (the cube's perspective divide is the one where it
+matters — a floor would move negative vertices), `Math.floor(v / 256)` for an
+int64 `>> 8` (a JS `>>` is 32-bit and the spin clocks pass 2³¹ in hours), and
+`Math.fround` on the host's float parameters before each conversion.
+
+**How the port is checked — not only by a reader.** `demo/tools/crosscheck.mjs`
+runs the port beside `cptest --pipe` at Integer ×1 (320×256, or 320×200 for
+NTSC, where an output pixel *is* a playfield pixel, which `--scaling` already
+proves) and compares every field's playfield byte for byte over four cases,
+500 frames: the defaults at 50 fps; every scene pushed with UTF-8 text at 60 fps;
+NTSC with three planes at 24 fps; and speeds changed mid-run by a `--script`.
+`tools/verify.sh` runs it as `demo-port` (skipped without node). Measured
+2026-09-24: 0 pixels different. Negative controls, run once by hand and not
+shipped: the accumulator's re-anchor dropped failed the speed case (90 of 130
+frames); the line mode's step decision inverted failed three of the four cases
+(the NTSC case has three planes, so the cube's plane 3 is not displayed —
+itself a check that `Bitplanes` is honoured). **What no case reaches is checked
+only by a reader**: a change of Standard mid-run, a host-time jump, and the
+page's own clock, panel and WebGL2 draw.
+
+**What is omitted, and why.** `Clock.cpp` (the host-clock unit detector: the
+kit's clock is seconds by construction). The About block (FF_TYPE_TEXT +
+FF_TYPE_EVENT buttons for a host). `Diag`. The harness's negative-control
+perturbations in `chip::Debug`/`demo::Debug` are kept at their shipped values
+only — none is reachable from a parameter. Nothing is audio-driven, so there is
+no audio caveat to make.
+
+### Decisions the page made
+
+- **The port was checked against the C++, not only read.** The brief for these
+  pages says a CPU port is "checked only by a reader". Copperlist's whole
+  picture is the port, and `cptest --pipe` already emits the plugin's output at
+  a raster where output = playfield, so comparing them cost one script. The
+  page's banner and disclosure say exactly what the check covers and what it
+  does not.
+- **Restart and Step move the kit's clock and nothing else.** Every field is a
+  pure function of its number and the settings (`--replay`), so a jump — back
+  to 0, or forward 1/60 s — lands where a run would, by the plugin's own
+  `Advance`. The accumulators are not reset on Restart, because the plugin does
+  not reset them on a host seek either.
+- **No clip picker and no file input** (astable's precedent): a source declares
+  zero inputs. `sources: []`, a `blurb` for the banner, and both transport
+  controls removed from the DOM after mounting.
+- **The eight `FF_TYPE_INTEGER` controls are dropdowns of every value in their
+  range** (galvo's precedent): the kit has no integer control. None needed
+  thinning; the largest is Star Count's 65 entries.
+- **Text works.** The page hands the port the text's UTF-8 bytes, because the
+  plugin's `std::string` holds bytes and walks them one glyph a byte, so a
+  character outside the font is one `?` per byte in both.
+- **`showBackdrop` is on**, because Background = Transparent writes alpha 0
+  round the screen and what sits behind is then a real question.
+- **A readout under the canvas** gives the field number, the copper's write
+  count and the JavaScript's cost per field (about 4–8 ms in headless Chrome on
+  SwiftShader, against the C++'s 0.86 ms). It is labelled as the port's cost,
+  not the plugin's.
+- **The kit was copied into `demo/vendor/` by hand**, because `sync.sh` skips a
+  repo with no `demo/`. From now on `sync.sh copperlist` maintains it.
 
 ---
 

@@ -36,6 +36,8 @@ the field arithmetic, or any tolerance in the harness.
 - The output is the chip's picture: `./build/cptest --scaling`
 - Cost: `./build/cptest --bench`
 - No dead controls: `python3 tools/sweep.py` (`--size WxH`, `--jobs N`)
+- The demo's shaders are still the plugin's: `python3 demo/tools/check_shaders.py`
+- The demo's port still paints the plugin's fields: `node demo/tools/crosscheck.mjs build-universal/cptest`
 
 Every GL check runs at 1280x720 and 320x180; every check carries its negative
 control and asserts that it fails.
@@ -70,13 +72,23 @@ control and asserts that it fails.
 - `copperlist_core` is an OBJECT library, not STATIC.
 - macOS build must be universal. Verify with `lipo`, never the build log.
 - FFGL id is `CP01`. Display name `SW Copperlist`.
+- `demo/` is the browser demo at copperlist-demo.stoatworks-labs.com: the two
+  shaders copied verbatim plus a JavaScript port of the chips, the cracktro and
+  the field clock. Serve it with `python3 -m http.server 8931` from `demo/`.
+  No build step. **Changing `source/chip/`, `source/demo/`, `Controls.h`,
+  `Render.cpp` or the clock means changing `demo/plugin.js` too** — the
+  crosscheck above fails otherwise. `demo/vendor/` is the shared kit — do not
+  edit it; re-copy with `stoatworks-backend/resolume-demo/sync.sh copperlist`.
+  Deploy from the repo root with `cf-run npx wrangler deploy`, and verify by
+  CONTENT (`curl -s 'https://copperlist-demo.stoatworks-labs.com/?cb=1' | grep -o '<title>[^<]*'`):
+  a wrong page still answers 200.
 
 ## Not done yet
 - Never loaded into Resolume, on any platform. Never run on any rasteriser but
   this Mac's. Windows never compiled. CI never run.
 - Registered on the website; `StoatworksAbout.h` and `ATTRIBUTIONS.md` are generated
   by stoatworks-backend's syncs, so edit the master lists there, not here.
-- No DMA slot contention, no OpenFX port, no browser demo. The user guide is
+- No DMA slot contention, no OpenFX port. The user guide is
   `docs/USER-GUIDE.md`; every claim in it is read from the code, so change both together.
 
 ## Diagnostics
