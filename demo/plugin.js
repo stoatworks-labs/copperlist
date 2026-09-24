@@ -1798,6 +1798,7 @@ const mounted = mountDemo({
   tagline:
     'An Amiga cracktro — copper bars, a sine scroller, a three-layer starfield, a spinning cube, a chain of bobs, colour cycling — made by emulating the chips that drew it. A copper bar is nothing but colour-register writes at the start of scanlines, so two bars that cross cannot blend and a colour change mid-line lands on the copper’s four-pixel grid. The final scale is the plugin’s own shader; the chips and the cracktro are a JavaScript port of its C++.',
   repo: 'https://github.com/stoatworks-labs/copperlist',
+  page: 'https://stoatworks-labs.com/software/copperlist/',
 
   // The stock banner says the page runs "on generated clips". Copperlist is a
   // SOURCE — SetMinInputs( 0 ), SetMaxInputs( 0 ) — so that would be the banner
