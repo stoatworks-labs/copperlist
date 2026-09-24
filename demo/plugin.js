@@ -1794,6 +1794,9 @@ const PARAMS = [
 
 const mounted = mountDemo({
   name: 'Copperlist',
+  // The FFGL type the plugin registers (PluginInfo), for the kit banner's
+  // closing sentence, which said "effect" on every page until 2026-09-24.
+  kind: 'source',
   pluginId: 'CP01',
   tagline:
     'An Amiga cracktro — copper bars, a sine scroller, a three-layer starfield, a spinning cube, a chain of bobs, colour cycling — made by emulating the chips that drew it. A copper bar is nothing but colour-register writes at the start of scanlines, so two bars that cross cannot blend and a colour change mid-line lands on the copper’s four-pixel grid. The final scale is the plugin’s own shader; the chips and the cracktro are a JavaScript port of its C++.',
