@@ -107,6 +107,13 @@ emulated machine, so the look cannot cheat.
   from the host clock; a 60 fps composition repeats fields and never
   interpolates one.
 
+[![Copperlist — an Amiga cracktro, emulated chip by chip, for Resolume](docs/video-thumb.png)](https://www.youtube.com/watch?v=uf_rALgbo2w)
+
+*[Watch it](https://www.youtube.com/watch?v=uf_rALgbo2w) — 62 seconds: copper bars as register writes that cannot blend, Bar Wave's WAITs landing on the four-pixel grid, the blitter's line-mode cube wireframe and filled, bobs on four paths, the sine scroller and its colour cycling, bitplanes taken away until the chip stops fetching them, and the Border running the copper's colours into the letterbox. Every frame is the real plugin's output: an FFGL plugin has no window,
+so the footage is rendered by this repository's own offline harness
+(`cptest --pipe`, driven by a cue sheet) rather than filmed off a screen, and
+there is no input clip, since it is a source.*
+
 ## The controls
 
 **Text** — Text (the scroller's message; empty turns it off), Scroll Speed
