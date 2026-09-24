@@ -79,7 +79,9 @@ control and asserts that it fails.
   `Render.cpp` or the clock means changing `demo/plugin.js` too** — the
   crosscheck above fails otherwise. `demo/vendor/` is the shared kit — do not
   edit it; re-copy with `stoatworks-backend/resolume-demo/sync.sh copperlist`.
-  Deploy from the repo root with `cf-run npx wrangler deploy`, and verify by
+  A push to main deploys it (`.github/workflows/deploy.yml`, which checks the
+  live `<head>` is the build); by hand, `cf-run npx wrangler deploy` from the
+  repo root. Verify by
   CONTENT (`curl -s 'https://copperlist-demo.stoatworks-labs.com/?cb=1' | grep -o '<title>[^<]*'`):
   a wrong page still answers 200.
 
