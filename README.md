@@ -34,6 +34,38 @@ port is compared byte for byte with the plugin on 500 fixed frames by
 `tools/verify.sh`; it is still a port and not the plugin: read what
 [the page itself says it does not reproduce](https://copperlist-demo.stoatworks-labs.com).
 
+<!-- downloads:start -->
+
+## Download
+
+**[v0.1.0](https://github.com/stoatworks-labs/copperlist/releases/tag/v0.1.0)** — prebuilt for macOS and Windows. Pick your platform:
+
+<details>
+<summary><b>macOS</b> — Universal (Apple Silicon + Intel)</summary>
+
+| Build | Download | Size |
+| --- | --- | --- |
+| Universal (Apple Silicon + Intel) · .dmg disk image | [`copperlist-0.1.0-macos-universal.dmg`](https://github.com/stoatworks-labs/copperlist/releases/download/v0.1.0/copperlist-0.1.0-macos-universal.dmg) | 247 KB |
+| Universal (Apple Silicon + Intel) · .zip archive | [`copperlist-macos-universal.zip`](https://github.com/stoatworks-labs/copperlist/releases/latest/download/copperlist-macos-universal.zip) | 208 KB |
+
+</details>
+
+<details>
+<summary><b>Windows</b> — x64</summary>
+
+| Build | Download | Size |
+| --- | --- | --- |
+| x64 · .exe installer | [`copperlist-0.1.0-windows-x86_64-setup.exe`](https://github.com/stoatworks-labs/copperlist/releases/download/v0.1.0/copperlist-0.1.0-windows-x86_64-setup.exe) | 230 KB |
+| x64 · .zip archive | [`copperlist-windows-x86_64.zip`](https://github.com/stoatworks-labs/copperlist/releases/latest/download/copperlist-windows-x86_64.zip) | 125 KB |
+
+</details>
+
+All builds, checksums and release notes: [github.com/stoatworks-labs/copperlist/releases](https://github.com/stoatworks-labs/copperlist/releases).
+
+macOS builds are signed and notarised and open normally. The Windows builds are unsigned, so SmartScreen warns once.
+
+<!-- downloads:end -->
+
 ## Copper bars are register writes
 
 A cracktro looks the way it does because of the chip that drew it. The Amiga's
