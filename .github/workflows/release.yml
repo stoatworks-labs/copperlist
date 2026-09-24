@@ -14,7 +14,8 @@ name: release
 # also the only thing standing between "the code uses nothing
 # platform-specific" and actually knowing Windows compiles.
 #
-# NOTE: this workflow has never run. The repo has no remote and no tag.
+# It has run: two dispatched builds on 2026-09-23 and the v0.1.0 tag on
+# 2026-09-24 (run 35941323113), all green.
 on:
   workflow_dispatch:
   push:

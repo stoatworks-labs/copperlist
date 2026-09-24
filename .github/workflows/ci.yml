@@ -5,8 +5,6 @@ name: ci
 # structurally blind to, because macOS never links GLEW -- is caught before a
 # tag. There is no Linux job: the CMakeLists branches on APPLE and WIN32, and
 # Resolume has no Linux build.
-#
-# NOTE: this workflow has never run. The repo has no remote yet.
 on:
   push:
     branches: [main]
@@ -48,14 +46,15 @@ jobs:
         # and the chip's own picture, so a rasteriser has no say in them.
         # The rest fall back to software rasterisation at 320x180.
         #
-        # THIS HAS NEVER RUN. Four of six plugins in an earlier fleet round
-        # shipped numeric checks calibrated to one Mac's GPU that failed on a
-        # GPU-less runner, and in every case the test was wrong rather than
-        # the plugin. Every GL assertion here is exact -- texel for pixel at
-        # centres that cannot round into a neighbour -- and AGENTS.md argues
-        # each one ("Would this hold on another rasteriser, at another
-        # raster?"), but argued is not proven, and a llvmpipe run is what
-        # would prove it.
+        # Four of six plugins in an earlier fleet round shipped numeric checks
+        # calibrated to one Mac's GPU that failed on a GPU-less runner, and in
+        # every case the test was wrong rather than the plugin. Every GL
+        # assertion here is exact -- texel for pixel at centres that cannot
+        # round into a neighbour -- and AGENTS.md argues each one ("Would this
+        # hold on another rasteriser, at another raster?"). This step has run
+        # green on every push since the first, 2026-09-23 (run 35928508317):
+        # all nine suites pass on this runner's software rasteriser. That is
+        # macOS's, not llvmpipe; no Linux runner has tried them.
         run: ctest --test-dir build --output-on-failure
 
       - name: Controls
