@@ -24,9 +24,10 @@ captured from Resolume.*
 > exactly `floor(t × 50)` (60 on NTSC) from Resolume's ~499 million ms clock; every channel of
 > 17.6 million output pixels is a multiple of 17; and a field reached by running is byte-identical
 > to the same field reached by a jump. All 24 controls that can be swept change the picture.
-> It has **not been loaded into Resolume yet**, on any platform. The one host it has run in is
+> It has **not been loaded into Resolume on macOS yet**. The one host it has run in there is
 > the fleet's own test host, `oxbow`, which instantiates it and reads **SW Copperlist / CP01 /
 > source**.
+> On Windows, a build of v0.1.0 loads, registers and renders in Resolume Arena 7.27.1, with every control matching what the plugin declares — on software rendering, so that says nothing about a GPU. Because the picture never stands still, that test could not tell most controls' effect from the motion itself; the harness shows every control changing the picture.
 > Try it on a spare layer before you put it in a show.
 >
 > This codebase was created with AI assistance, directed and reviewed by a human author.
@@ -370,17 +371,18 @@ unit the host's clock turned out to arrive in.
 
 ## Known limits
 
-- **Not loaded into Resolume yet**, on any platform. How the 25 controls in six groups read in
+- **Not loaded into Resolume on macOS yet.** On Windows it loads and renders in Arena, on
+  software rendering, with every control as declared. How the 25 controls in six groups read in
   the inspector, how Resolume's text field edits the message, and what Resolume's clock does are
   inherited from the rest of the fleet, not measured here.
-- **Never run on a rasteriser but one Mac's.** Integer scaling is argued to be exact on any GPU,
-  not proved.
+- **Measured on one Mac's GPU only.** Integer scaling is argued to be exact on any GPU, not
+  proved; the checks also pass on a software renderer.
 - **No DMA slot contention**, as above, and the copper's write takes effect at once where a real
   machine's shows a few pixels later. Both would only shift where a mid-line colour change lands.
 - **The Text parameter is the scroller's only switch**, and an empty message is the only way to
   turn the scroller off.
 - **The blitter is instantaneous**, and the demo does not race the beam. The picture is the same.
-- **No presets**, no OpenFX version and no browser demo.
+- **No presets** and no OpenFX version.
 
 ---
 

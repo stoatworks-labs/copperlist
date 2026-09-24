@@ -11,8 +11,10 @@
 > number **exactly** `floor(t × 50)` from Resolume's ~499 million ms clock,
 > every output channel a **multiple of 17**, and a field reached by running
 > **byte-identical** to the same field reached by a jump (see [Status](#status)).
-> Copperlist itself has **never been loaded into Resolume**, on any platform —
-> not once. Check it in your own rig before trusting it in a show.
+> Copperlist itself has **never been loaded into Resolume on macOS**. On
+> Windows, a build of v0.1.0 loads, registers and renders in Resolume Arena
+> 7.27.1 with every control as declared, on software rendering. Check it in
+> your own rig before trusting it in a show.
 
 An Amiga cracktro as an FFGL **source** for [Resolume](https://resolume.com)
 Arena and Avenue — not drawn to look like one, but written against an emulation
@@ -145,7 +147,7 @@ where it comes from.
 
 ## Status
 
-**v0.1.0, unreleased, and honestly early.** Verified by measurement on an Apple
+**v0.1.0, and honestly early.** Verified by measurement on an Apple
 M4 Max, macOS 26.4.1, 2026-09-23:
 
 | Check | Result |
@@ -169,12 +171,23 @@ M4 Max, macOS 26.4.1, 2026-09-23:
 
 Run `tools/verify.sh` before believing any of it.
 
-**Not done.** Copperlist has **never been loaded into Resolume** — not on
-macOS, not on Windows, not once — so the host clock's unit, the text
-parameter's editing and the look at a real composition size are all inherited
-assumptions. The **Windows build has never been compiled**; CI exists and has
-never run, because there is no remote. Nothing has run on a **rasteriser other
-than this Mac's**. The emulation leaves out what does not show: the 68000,
+**Windows, in Resolume Arena 7.27.1** (win-lab, Mesa llvmpipe, no GPU, 2026-09-24):
+a CI build of v0.1.0 loads from Extra Effects, registers as `SW Copperlist` / `CP01` /
+source, all 30 host controls match the declaration in name, order, type, range and
+default, it renders, and Arena's log stays clean: 9 of 9 of the fleet gate's checks.
+23 controls read inconclusive rather than live: a source that never stands still —
+PAL fields, the scroller, the bars, the stars — lifts the gate's noise floor above
+what one control changes. That is the gate's blind spot for a moving source, not the
+plugin's; the sweep above shows every sweepable control live on macOS. Software
+rendering says nothing about a GPU or about speed.
+
+**Not done.** Copperlist has **never been loaded into Resolume on macOS**, so the
+host clock's unit, the text parameter's editing and the look at a real composition
+size are all inherited assumptions. Every number above is this Mac's. CI runs the
+suites and the sweep on GitHub's GPU-less macOS runner, on Apple's software renderer,
+and the plugin has rendered on **llvmpipe** in Arena, but only the gate's checks were
+made there; no second GPU has run any of it.
+The emulation leaves out what does not show: the 68000,
 audio, interrupts, and **DMA slot contention** — with five bitplanes the
 manual's bitplane fetches take odd memory slots during the display, which on a
 real machine would delay copper instructions executing inside the window; here

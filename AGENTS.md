@@ -4,9 +4,10 @@
 Amiga cracktro — copper bars, a sine scroller, a three-layer starfield, a
 spinning cube, a chain of bobs, colour cycling — by **emulating the chips that
 drew them** and writing the demo against that emulation. C++17 + GLSL 4.10,
-CMake, universal macOS `.bundle` and a Windows `.dll`. MIT. Intended home
-`github.com/stoatworks-labs/copperlist`; **it is not there yet** — v0.1.0 is
-local, unreleased and has never been in front of Resolume.
+CMake, universal macOS `.bundle` and a Windows `.dll`. MIT. Public at
+`github.com/stoatworks-labs/copperlist`, released as v0.1.0 on 2026-09-24; it
+has been in front of Resolume only on Windows, on software rendering (see
+"Assumed, or not yet done").
 
 `CLAUDE.md` is the command reference. This file is the *why*: the idea, the
 manual's facts and where each came from, every number in the harness, the
@@ -194,7 +195,10 @@ original and `touch`ing it against the same-second make trap — **not** with
 - `--scaling` Integer: **yes**, same argument. Fit: **yes within ±1e-3 texel
   at a boundary**, derived from float32 division error, argued, not observed
   on a second GPU. Aspect: **yes**, whole-pixel edges within half a pixel.
-- What has NOT been proved: any of this on llvmpipe. CI has never run.
+- What has NOT been proved: any of this on llvmpipe or a second GPU. CI runs the
+  suites and the sweep on GitHub's GPU-less macOS runner, on Apple's software
+  renderer, and they pass there; the plugin has rendered on llvmpipe in Arena,
+  but only the fleet gate's checks were made there.
 
 ---
 
@@ -383,11 +387,21 @@ in six runs no field at all.
 
 **Assumed, or not yet done:**
 
-- **Never loaded into Resolume.** Every host claim — the clock in
-  milliseconds, the text parameter's editing, the Extra Effects folder — is
-  inherited from the fleet, not measured here.
-- **Never run on another rasteriser.** Argued above, not proved. CI has never
-  run. Windows has never compiled.
+- **Never loaded into Resolume on macOS.** On Windows, v0.1.0's CI build
+  passed the fleet Arena gate 9 of 9 in Arena 7.27.1 on llvmpipe (2026-09-24):
+  it loads from Extra Effects, registers as `SW Copperlist` / `CP01` / source,
+  all 30 host controls match the declaration, it renders and the log is clean.
+  23 controls read inconclusive rather than live, because a source that never
+  stands still (PAL fields, scroller, bars, stars) lifts the gate's noise floor
+  above what one control changes — the gate's blind spot for a moving source,
+  not the plugin's; the sweep proves every control on macOS. The clock in
+  milliseconds and the text parameter's editing are still inherited from the
+  fleet, not measured here.
+- **The harness has run on one other rasteriser only**: Apple's software
+  renderer on GitHub's macOS runner, where CI's suites and sweep pass. A second
+  GPU is argued above, not proved. The plugin has rendered on llvmpipe in Arena,
+  but only the gate's checks were made there, and software rendering says
+  nothing about a GPU or about speed.
 - **The copper-to-pixel delay** is zero here and a few pixels on the machine.
 - **No DMA contention**, as above.
 - **The line-mode step rule** is a reading of the registers, stated.

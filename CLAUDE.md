@@ -2,8 +2,8 @@
 
 An Amiga cracktro as an FFGL **source** for Resolume Arena/Avenue, written
 against an emulated copper, blitter and Denise. C++17/GLSL 4.10, CMake MODULE →
-universal `.bundle` (macOS) + Windows `.dll`. MIT. Not yet public, not yet
-released, never loaded into Resolume.
+universal `.bundle` (macOS) + Windows `.dll`. MIT. Public and released
+(v0.1.0); never loaded into Resolume on macOS.
 
 Read `AGENTS.md` before changing the chipset's timing, the demo's copper list,
 the field arithmetic, or any tolerance in the harness.
@@ -86,8 +86,10 @@ control and asserts that it fails.
   a wrong page still answers 200.
 
 ## Not done yet
-- Never loaded into Resolume, on any platform. Never run on any rasteriser but
-  this Mac's. Windows never compiled. CI never run.
+- Never loaded into Resolume on macOS. The Windows CI build of v0.1.0 passed the
+  Arena gate 9 of 9 on win-lab (Arena 7.27.1, llvmpipe) on 2026-09-24, 23 controls
+  inconclusive because a moving source lifts the gate's noise floor. The harness
+  has run on no GPU but this Mac's; CI runs it on GitHub's software renderer.
 - Registered on the website; `StoatworksAbout.h` and `ATTRIBUTIONS.md` are generated
   by stoatworks-backend's syncs, so edit the master lists there, not here.
 - No DMA slot contention, no OpenFX port. The user guide is
