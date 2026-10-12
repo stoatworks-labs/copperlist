@@ -151,7 +151,7 @@ The macOS build is universal (arm64 + x86_64) by default; add
 `-DCMAKE_OSX_ARCHITECTURES=arm64` for a faster dev build. Windows needs GLEW
 from vcpkg (`vcpkg.json`). The bundle goes in Resolume's **Extra Effects**
 folder; `cmake --install build` puts it in `~/Documents/Resolume Arena/Extra
-Effects` (untested, since nothing here has been in front of Resolume).
+Effects` (untested, since nothing here has been in front of Resolume on a Mac).
 
 ## Building and testing
 
