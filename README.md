@@ -1,38 +1,34 @@
 # Copperlist
 
 > **AI-assisted project.** This codebase was created with [Claude](https://claude.com/claude-code)
-> (Anthropic), directed and reviewed by a human author. The chipset is not
-> asserted but measured: an offline harness drives the real plugin class and
-> reads the emulated chip's own memory and picture, then the rendered output in
-> a headless GL context at two rasters — every copper colour change on the
-> manual's **four-pixel grid** and never closer than **one MOVE (8 px)**, two
-> bars that cross resolving to the **later write, never a blend**, **576**
-> blitter lines equal **pixel for pixel** to an independent Bresenham, the field
-> number **exactly** `floor(t × 50)` from Resolume's ~499 million ms clock,
-> every output channel a **multiple of 17**, and a field reached by running
-> **byte-identical** to the same field reached by a jump (see [Status](#status)).
-> Copperlist itself has **never been loaded into Resolume on macOS**. On
-> Windows, a build of v0.1.0 loads, registers and renders in Resolume Arena
-> 7.27.1 with every control as declared, on software rendering. Check it in
-> your own rig before trusting it in a show.
+> (Anthropic), directed and reviewed by a human author. The chipset is measured
+> rather than asserted: an offline harness drives the real plugin class, reads the
+> emulated chip's own memory and picture, then checks the rendered output headlessly
+> at two rasters. Every number, from the copper's four-pixel grid to the blitter's
+> lines against Bresenham, is under [Status](#status). Copperlist itself has
+> **never been loaded into Resolume on macOS**. On Windows, a build of v0.1.0
+> loads, registers and renders in Resolume Arena 7.27.1 with every control as
+> declared, on software rendering. Check it in your own rig before you trust it
+> with a show.
 
 An Amiga cracktro as an FFGL **source** for [Resolume](https://resolume.com)
-Arena and Avenue — not drawn to look like one, but written against an emulation
-of the chips that made them look that way.
+Arena and Avenue. It's written against an emulation of the chips that made
+cracktros look the way they did, so the copper bars, the scroller and the cube
+come out the way the hardware allowed and not a pixel prettier.
 
 ![Copper bars, a sine scroller, a wireframe cube, bobs and a starfield](docs/hero.png)
 
 <sub>The defaults, 212 host frames in, at 1280×720 with Integer scaling (×2,
-letterboxed — the copper bars run on into the border, as they did on a
-monitor). Rendered by `cptest`, the offline harness, not captured from
+letterboxed; the copper bars run on into the border, as they did on a
+monitor). Rendered by `cptest`, the offline harness, rather than captured from
 Resolume.</sub>
 
-**[Try it in your browser](https://copperlist-demo.stoatworks-labs.com)** — a
+**[Try it in your browser](https://copperlist-demo.stoatworks-labs.com)**: a
 JavaScript port of the chip emulation and the cracktro, put on screen by the
-plugin's own shader in WebGL2, with every control and a working Text field. The
-port is compared byte for byte with the plugin on 500 fixed frames by
-`tools/verify.sh`; it is still a port and not the plugin: read what
-[the page itself says it does not reproduce](https://copperlist-demo.stoatworks-labs.com).
+plugin's own shader in WebGL2, with every control and a working Text field.
+`tools/verify.sh` compares the port byte for byte with the plugin on 500 fixed
+frames, but it's still a port rather than the plugin, so have a read of
+[what the page says it doesn't reproduce](https://copperlist-demo.stoatworks-labs.com).
 
 <!-- downloads:start -->
 
@@ -70,38 +66,38 @@ macOS builds are signed and notarised and open normally. The Windows builds are 
 
 A cracktro looks the way it does because of the chip that drew it. The Amiga's
 **copper** is a tiny co-processor that waits for the video beam to reach a
-screen position and then writes a value into a hardware register — usually a
-colour register. **A copper bar is nothing but colour-register writes at the
-start of scanlines.** So:
+screen position and then writes a value into a hardware register, usually a
+colour register. **A copper bar is just colour-register writes at the start of
+scanlines.** So:
 
 - **A bar is always horizontal, one line tall per colour step**, because a
   write lasts until the next one, and the next one is on the next line.
-- **Two bars that cross cannot blend.** A register holds one value; the later
-  write in the copper list is what is on screen.
+- **Two bars that cross can't blend.** A register holds one value, and the
+  later write in the copper list is what ends up on screen.
 - **A colour change in the middle of a line lands on the copper's own grid**:
   a WAIT resolves four low-resolution pixels, and each MOVE costs eight.
 
-So Copperlist does not draw a cracktro. It **emulates the part of the chipset
-that makes one** — chip RAM, the copper reading real instruction words out of
+So Copperlist doesn't draw a cracktro. It **emulates the part of the chipset
+that makes one** (chip RAM, the copper reading real instruction words out of
 it, 32 twelve-bit colour registers, five bitplanes, eight 16-pixel sprites and
-the blitter — and the demo is C++ that builds a copper list and issues blits
-every field, as the original coders' code did. Every constraint lives in the
-emulated machine, so the look cannot cheat.
+the blitter), and the demo is C++ that builds a copper list and issues blits
+every field, the way the original coders' code did. Every constraint lives in
+the emulated machine, so the look can't cheat.
 
-**What falls out of it**, rather than being added on:
+**What falls out of that**, without anyone adding it on:
 
 - **4,096 colours**, and not one more: every channel on screen is a multiple
   of 17, because a gun has four bits.
 - **The starfield is three sprites**, one per layer, re-positioned by the copper
-  on every line that has a star — sprite multiplexing — and moving whole pixels
+  on every line that has a star (sprite multiplexing), and moving whole pixels
   per field.
-- **The scroller moves by whole pixels**, because it is blitted into a bitplane
+- **The scroller moves by whole pixels**, because it's blitted into a bitplane
   at an integer offset, and its wave is whole lines, because each column is a
   separate blit.
 - **The cube is the blitter's line mode**, Bresenham with the manual's octant
-  table; filled, it is one dot a row, exclusive-or, and an area fill.
+  table; filled, it's one dot a row, exclusive-or, and an area fill.
 - **Fewer bitplanes means fewer colours and fewer scenes**: at three planes the
-  cube's plane is simply not fetched.
+  cube's plane doesn't get fetched at all.
 - **Colour cycling is three registers rotated.** The cheapest effect of all.
 - **Fields, not frames.** The emulation runs at 50 Hz (PAL) or 60 Hz (NTSC)
   from the host clock; a 60 fps composition repeats fields and never
@@ -109,40 +105,41 @@ emulated machine, so the look cannot cheat.
 
 [![Copperlist — an Amiga cracktro, emulated chip by chip, for Resolume](docs/video-thumb.png)](https://www.youtube.com/watch?v=uf_rALgbo2w)
 
-*[Watch it](https://www.youtube.com/watch?v=uf_rALgbo2w) — 62 seconds: copper bars as register writes that cannot blend, Bar Wave's WAITs landing on the four-pixel grid, the blitter's line-mode cube wireframe and filled, bobs on four paths, the sine scroller and its colour cycling, bitplanes taken away until the chip stops fetching them, and the Border running the copper's colours into the letterbox. Every frame is the real plugin's output: an FFGL plugin has no window,
-so the footage is rendered by this repository's own offline harness
-(`cptest --pipe`, driven by a cue sheet) rather than filmed off a screen, and
-there is no input clip, since it is a source.*
+*[Watch it](https://www.youtube.com/watch?v=uf_rALgbo2w) (62 seconds): copper bars as register writes that can't blend, Bar Wave's WAITs landing on the four-pixel grid, the blitter's line-mode cube wireframe and filled, bobs on four paths, the sine scroller and its colour cycling, bitplanes taken away until the chip stops fetching them, and the Border running the copper's colours into the letterbox. It's all the plugin's own output. An FFGL plugin doesn't have a window to film,
+so the footage comes from this repo's offline harness
+(`cptest --pipe`, driven by a cue sheet) rather than off a screen, and
+there's no input clip, since it's a source.*
 
 ## The controls
 
-**Text** — Text (the scroller's message; empty turns it off), Scroll Speed
+**Text:** Text (the scroller's message; empty turns it off), Scroll Speed
 (0–8 pixels a field), Wave Height (0–48 lines), Wave Length (40–640 columns a
 cycle), Colour Cycle (off to a step every other field).
 
-**Bars** — Bar Count (0–8), Bar Height (4–48 lines), Bar Speed, Bar Wave (0 puts
+**Bars:** Bar Count (0–8), Bar Height (4–48 lines), Bar Speed, Bar Wave (0 puts
 every write in horizontal blank so bars run the full width; above 0 each bar
 starts at a WAIT that swings on the copper's grid), Bar Palette (Rainbow,
 Fire, Ice, Mono).
 
-**Stars** — Star Count (0–64 a layer), Star Speed (1–4 pixels a field for the
+**Stars:** Star Count (0–64 a layer), Star Speed (1–4 pixels a field for the
 slowest layer), Layers (1–3).
 
-**Cube** — Cube On, Cube Size, Spin X, Spin Y (0.5 is still), Filled.
+**Cube:** Cube On, Cube Size, Spin X, Spin Y (0.5 is still), Filled.
 
-**Bobs** — Bob Count (0–16), Bob Path (Lissajous, Circle, Wave, Figure Eight).
+**Bobs:** Bob Count (0–16), Bob Path (Lissajous, Circle, Wave, Figure Eight).
 
-**Machine** — Standard (PAL 320×256 at 50 Hz, NTSC 320×200 at 60 Hz),
-Bitplanes (1–5), Scaling (Integer — whole multiples, letterboxed; Fit — the
-largest scale, nearest; Fit Smooth — bilinear), Pixel Aspect (Non-square —
-**1.0397** for PAL, **0.8571** for NTSC, derived from the colour clock — or
-Square; Integer ignores it), Background (Border — the colour the beam left, as
+**Machine:** Standard (PAL 320×256 at 50 Hz, NTSC 320×200 at 60 Hz),
+Bitplanes (1–5), Scaling (Integer: whole multiples, letterboxed; Fit: the
+largest scale, nearest; Fit Smooth: bilinear), Pixel Aspect (Non-square,
+**1.0397** for PAL and **0.8571** for NTSC, derived from the colour clock, or
+Square; Integer ignores it), Background (Border: the colour the beam left, as
 a monitor shows it; Black; Transparent).
 
-**About** — the project's links.
+**About:** the project's links.
 
-Every scene is switchable by the control that already says how many: an empty
-Text, Bar Count 0, Star Count 0, Bob Count 0, Colour Cycle 0, Cube On off.
+Every scene can be switched off with the control that already says how many
+there are: an empty Text, Bar Count 0, Star Count 0, Bob Count 0, Colour Cycle
+0, Cube On off.
 
 ## Build
 
@@ -154,7 +151,7 @@ The macOS build is universal (arm64 + x86_64) by default; add
 `-DCMAKE_OSX_ARCHITECTURES=arm64` for a faster dev build. Windows needs GLEW
 from vcpkg (`vcpkg.json`). The bundle goes in Resolume's **Extra Effects**
 folder; `cmake --install build` puts it in `~/Documents/Resolume Arena/Extra
-Effects` — untested, since nothing here has been in front of Resolume.
+Effects` (untested, since nothing here has been in front of Resolume).
 
 ## Building and testing
 
@@ -177,16 +174,16 @@ chip's memory and picture directly.
     tools/verify.sh                         all of it, on a fresh universal build
 
 The chip's claims are measured in chip RAM and in the chip's own picture, with
-no rasteriser involved; the output checks run at **1280×720 and 320×180**, and
-every assertion is exact — a texel for a pixel, a whole-pixel shift, a byte
-comparison — with each tolerance that is not zero derived and written down.
-Every check carries a **negative control**: the model perturbed one way, and
-the check asserted to fail. [AGENTS.md](AGENTS.md) lists every number and
-where it comes from.
+no rasteriser involved. The output checks run at **1280×720 and 320×180**, and
+every assertion is exact (a texel for a pixel, a whole-pixel shift, a byte
+comparison), with every tolerance that isn't zero derived and written down.
+Every check carries a **negative control**: the model nudged one way, and the
+check required to fail on it. [AGENTS.md](AGENTS.md) lists every number and where it
+comes from.
 
 ## Status
 
-**v0.1.0, and honestly early.** Verified by measurement on an Apple
+**v0.1.0, and still early days.** Verified by measurement on an Apple
 M4 Max, macOS 26.4.1, 2026-09-23:
 
 | Check | Result |
@@ -208,17 +205,17 @@ M4 Max, macOS 26.4.1, 2026-09-23:
 | Host metadata | `oxbow selftest` instantiates it and sees pixels; `oxbow probe` reads **SW Copperlist / CP01 / source / inputs 0..0** |
 | Render cost | about **0.86 ms a field** on the CPU for the emulation, whatever the output size, plus about 0.03–0.13 ms to upload and draw: **0.89 ms/frame at 720p, 0.89 at 1080p, 0.99 at 4K** when every frame is a new field (5.3–5.9% of a 60 fps frame; fastest of five passes, with other builds loading this machine) |
 
-Run `tools/verify.sh` before believing any of it.
+Run `tools/verify.sh` before you believe any of it.
 
 **Windows, in Resolume Arena 7.27.1** (win-lab, Mesa llvmpipe, no GPU, 2026-09-24):
 a CI build of v0.1.0 loads from Extra Effects, registers as `SW Copperlist` / `CP01` /
 source, all 30 host controls match the declaration in name, order, type, range and
 default, it renders, and Arena's log stays clean: 9 of 9 of the fleet gate's checks.
-23 controls read inconclusive rather than live: a source that never stands still —
-PAL fields, the scroller, the bars, the stars — lifts the gate's noise floor above
-what one control changes. That is the gate's blind spot for a moving source, not the
-plugin's; the sweep above shows every sweepable control live on macOS. Software
-rendering says nothing about a GPU or about speed.
+23 controls read inconclusive rather than live. A source that never stands still (PAL
+fields, the scroller, the bars, the stars) lifts the gate's noise floor above what
+one control changes, which is a blind spot in the gate for a moving source rather
+than a fault in the plugin; the sweep above shows every sweepable control live on
+macOS. Software rendering says nothing about a GPU or about speed.
 
 **Not done.** Copperlist has **never been loaded into Resolume on macOS**, so the
 host clock's unit, the text parameter's editing and the look at a real composition
@@ -226,17 +223,16 @@ size are all inherited assumptions. Every number above is this Mac's. CI runs th
 suites and the sweep on GitHub's GPU-less macOS runner, on Apple's software renderer,
 and the plugin has rendered on **llvmpipe** in Arena, but only the gate's checks were
 made there; no second GPU has run any of it.
-The emulation leaves out what does not show: the 68000,
-audio, interrupts, and **DMA slot contention** — with five bitplanes the
-manual's bitplane fetches take odd memory slots during the display, which on a
-real machine would delay copper instructions executing inside the window; here
-they are never delayed. There is **no OpenFX port**, which is not needed for
-0.1.0. The browser demo is linked at the top.
+The emulation leaves out what doesn't show: the 68000, audio, interrupts, and **DMA
+slot contention**. With five bitplanes the manual's bitplane fetches take odd memory
+slots during the display, which on a real machine would delay copper instructions
+executing inside the window; here they're never delayed. There's **no OpenFX port**,
+which 0.1.0 doesn't need. The browser demo is linked at the top.
 
 The [user guide](docs/USER-GUIDE.md) covers every control, what it does and why.
 
 [AGENTS.md](AGENTS.md) has the manual's facts with their sections, where the
-manual is ambiguous, the traps, and what is assumed rather than measured.
+manual is ambiguous, the traps, and what's assumed rather than measured.
 
 <!-- attributions:start -->
 This project is built on other people's work — see [ATTRIBUTIONS.md](ATTRIBUTIONS.md).
