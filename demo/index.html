@@ -8,16 +8,42 @@
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="./vendor/kit.css" />
     <link rel="canonical" href="https://copperlist-demo.stoatworks-labs.com/" />
+    <meta name="project-page" content="https://stoatworks-labs.com/software/copperlist/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Stoatworks Labs" />
+    <meta property="og:title" content="Copperlist — browser demo | Stoatworks Labs" />
+    <meta property="og:description" content="Try the Copperlist FFGL source for Resolume in your browser: an Amiga cracktro made by emulating the copper, the blitter and the bitplanes that drew it. A JavaScript port of the plugin's chip emulation and cracktro, put on screen by the plugin's own shader in WebGL2." />
+    <meta property="og:url" content="https://copperlist-demo.stoatworks-labs.com/" />
+    <meta property="og:image" content="https://stoatworks-labs.com/thumbs/copperlist.png" />
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="720" />
+    <meta property="og:image:alt" content="Copperlist" />
+    <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
     <main id="demo">
       <noscript>
+        <h1>Copperlist</h1>
+        <p>
+          An FFGL source that plays an Amiga cracktro (copper bars, a sine
+          scroller, a starfield, a spinning cube and bobs), written against an
+          emulation of the chips that drew them: chip RAM, the copper, 32
+          twelve-bit colour registers, five bitplanes, eight sprites and the
+          blitter. Crossing bars can't blend because a register only holds one
+          value, a mid-line colour change lands on the copper's four-pixel grid,
+          and every channel is a multiple of 17 because a gun has four bits.
+        </p>
         <p>
           This demo runs a port of the plugin's chip emulation and its own
           shader in your browser, so it needs JavaScript and WebGL2. The
           plugin itself, its source and its downloads are on
           <a href="https://github.com/stoatworks-labs/copperlist">its repository</a>.
         </p>
+        <ul>
+          <li><a href="https://stoatworks-labs.com/software/copperlist/">Project page and downloads</a></li>
+          <li><a href="https://stoatworks-labs.com/software/copperlist/guide/">User guide</a></li>
+          <li><a href="https://github.com/stoatworks-labs/copperlist">Source on GitHub</a></li>
+        </ul>
       </noscript>
     </main>
 

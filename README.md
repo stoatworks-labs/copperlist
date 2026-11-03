@@ -16,6 +16,8 @@ Arena and Avenue. It's written against an emulation of the chips that made
 cracktros look the way they did, so the copper bars, the scroller and the cube
 come out the way the hardware allowed and not a pixel prettier.
 
+The [project page](https://stoatworks-labs.com/software/copperlist/) has the downloads, the [user guide](https://stoatworks-labs.com/software/copperlist/guide/) and the video.
+
 ![Copper bars, a sine scroller, a wireframe cube, bobs and a starfield](docs/hero.png)
 
 <sub>The defaults, 212 host frames in, at 1280×720 with Integer scaling (×2,
